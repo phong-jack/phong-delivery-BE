@@ -10,21 +10,20 @@ class Database {
     connect() {
         const sequelize = new Sequelize(database, username, password, {
             host,
-            database,
             dialect,
+            logging: console.log, // Đặt logging thành console.log để log các truy vấn SQL
             dialectOptions: {
+                useUTC: true, // for reading from database
             },
-            loggingLevels: ['sql', 'warn', 'infor'],
             define: {
-                freezeTableName: true,
                 underscored: false,
+                freezeTableName: true, //use singular table name
+                timestamps: false,  // I do not want timestamp fields by default
             },
-            timezone: "Asia/Calcutta"
         });
-
         sequelize.sync();
-        console.log("connect mysql success!");
 
+        console.log(sequelize.options);
         this.sequelize = sequelize;
     }
 
@@ -42,6 +41,11 @@ class Database {
 }
 
 
+
+
+
 const mysqlInstance = Database.getInstance();
 module.exports = mysqlInstance.getSequelize();
+
+
 

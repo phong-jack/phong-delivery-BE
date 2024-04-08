@@ -9,9 +9,12 @@ OrderStatus.init({
     statusCode: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        autoIncrement: true,
     },
-    statusDecription: {
+    statusReason: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    statusDescription: {
         type: DataTypes.STRING,
         allowNull: false
     }

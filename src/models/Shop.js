@@ -16,6 +16,10 @@ Shop.init({
         type: DataTypes.STRING,
         allowNull: false,
     },
+    phone: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
     address: {
         type: DataTypes.STRING,
         allowNull: true

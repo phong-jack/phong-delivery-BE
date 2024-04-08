@@ -1,5 +1,6 @@
 const { Sequelize, Model, DataTypes, TIME, DATE, NOW } = require('sequelize');
 const sequelize = require('../db/mysql.connect');
+const moment = require('moment');
 const MODEL_NAME = 'User';
 
 
@@ -58,13 +59,11 @@ User.init({
         type: DataTypes.INTEGER,
         allowNull: true,
     },
-    createdAt: {
-        type: 'TIMESTAMP',
-        defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
-    }
 }, {
     sequelize: sequelize,
     modelName: MODEL_NAME,
-    timestamps: false
+    freezeTableName: true,
+    timestamps: true,
+    updatedAt: false
 });
 module.exports = User;

@@ -42,13 +42,11 @@ Review.init({
         type: DataTypes.STRING,
         allowNull: false
     },
-    createAt: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW
-    }
+
 }, {
     sequelize: sequelize,
     modelName: MODEL_NAME,
-    timestamps: false
+    timestamps: true,
+    updatedAt: false
 });
 module.exports = Review;

@@ -13,6 +13,7 @@ Category.init({
     },
     name: {
         type: DataTypes.STRING(50),
+        unique: true,
         allowNull: false
     },
     description: {

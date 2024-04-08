@@ -1,24 +1,24 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../db/mysql.connect');
 const Location = require('./Location');
-const MODEL_NAME = 'Invoice_Detail';
+const MODEL_NAME = 'Order_Detail';
 
 const Food_Drink = require('./FoodDrink');
-const Invoice = require('./Invoice');
+const Order = require('./Order');
 
-class InvoiceDetail extends Model {}
-InvoiceDetail.init({
+class OrderDetail extends Model {}
+OrderDetail.init({
     detailId: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
     },
-    invoiceId: {
+    orderId: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: Invoice,
-            key: "invoiceId"
+            model: Order,
+            key: "orderId"
         }
     },
     foodDrinkId: {
@@ -46,4 +46,4 @@ InvoiceDetail.init({
     timestamps: false
 });
 
-module.exports = InvoiceDetail;
+module.exports = OrderDetail;

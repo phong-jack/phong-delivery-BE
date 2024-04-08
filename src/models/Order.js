@@ -1,14 +1,18 @@
-const { Model, DataTypes } = require('sequelize');
+const { Model, DataTypes, Sequelize } = require('sequelize');
 const sequelize = require('../db/mysql.connect');
-const MODEL_NAME = 'Invoice';
+const moment = require('moment');
+const MODEL_NAME = 'Order';
+
+
 
 const User = require('./User');
 const Shop = require('./Shop');
 const OrderStatus = require('./OrderStatus');
+const { ORDER_STATUS } = require('../constant');
 
-class Invoice extends Model {}
-Invoice.init({
-    invoiceId: {
+class Order extends Model {}
+Order.init({
+    orderId: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
@@ -38,11 +42,13 @@ Invoice.init({
         references: {
             model: OrderStatus,
             key: "statusCode"
-        }
+        },
+        defaultValue: ORDER_STATUS.INIT
     },
+
 }, {
     sequelize: sequelize,
     modelName: MODEL_NAME,
-    timestamps: true
+    timestamps: true,
 });
-module.exports = Invoice;
+module.exports = Order;
