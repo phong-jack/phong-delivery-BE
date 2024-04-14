@@ -32,7 +32,7 @@ const OrderDetail = require('./models/OrderDetail');
 const KeyToken = require('./models/KeyToken');
 
 //init routes
-app.use(require('./routes'));
+app.use('/api/v1', require('./routes'));
 
 
 

@@ -2,9 +2,11 @@ const express = require('express');
 const router = express.Router();
 
 
-router.use('/api/v1', require('./foodDrink'));
-router.use('/api/v1', require('./category'));
-router.use('/api/v1', require('./order'));
-router.use('/api/v1', require('./access'));
+
+router.use('/foodDrink', require('./foodDrink'));
+router.use('/category', require('./category'));
+router.use('/order', require('./order'));
+router.use('/shop', require('./shop'));
+router.use('/', require('./access'));
 
 module.exports = router;

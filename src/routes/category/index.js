@@ -5,10 +5,10 @@ const { getAllCategory, createNewCategory } = require('../../controllers/categor
 const router = express.Router();
 
 //Khong can check token
-router.get('/category/getAll', asyncHandler(getAllCategory));
+router.get('/getAll', asyncHandler(getAllCategory));
 
 //Can check token, chi co shop moi duoc them category!
-router.post('/category/createNewCategory', verifyToken, checkShopPermisson, asyncHandler(createNewCategory));
+router.post('/createNewCategory', verifyToken, checkShopPermisson, asyncHandler(createNewCategory));
 
 
 module.exports = router;
