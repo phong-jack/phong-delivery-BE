@@ -9,8 +9,10 @@ class FoodDrinkRepository {
     await FoodDrink.update({ image: image }, { where: { id } });
     return await FoodDrink.findByPk(id);
   }
+
+  static async findFoodDrinkByShop({ shopId }) {
+    return await FoodDrink.findAll({ where: { shopId }, raw: true });
+  }
 }
-
-
 
 module.exports = FoodDrinkRepository;

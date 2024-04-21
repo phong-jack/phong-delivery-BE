@@ -3,28 +3,36 @@ const FoodDrink = require("../models/FoodDrink");
 const UploadService = require("./upload.service");
 const FoodDrinkRepository = require("./repositories/foodDrink.repo");
 
-
-
 class FoodDrinkService {
   static getFoodDrinkByShop = async (shopId) => {
     return await FoodDrink.findAll({
       where: {
-        shopId
-      }
+        shopId,
+      },
     });
   };
 
-  static createNewFoodDrink = async (
-    { name, description, price, categoryId, shopId }) => {
-
+  static createNewFoodDrink = async ({
+    name,
+    description,
+    price,
+    categoryId,
+    shopId,
+  }) => {
     const existFoodDrink = await FoodDrink.findOne({
-      name, categoryId, shopId
+      name,
+      categoryId,
+      shopId,
     });
     if (existFoodDrink) {
       throw new BadRequestError("this food/drink already exist!");
     }
     const newFoodDrink = await FoodDrink.create({
-      name, description, price, categoryId, shopId
+      name,
+      description,
+      price,
+      categoryId,
+      shopId,
     });
 
     return newFoodDrink;
@@ -37,22 +45,35 @@ class FoodDrinkService {
     }
     const newStatus = !foodDrink.isAvailable;
     //Cap nhat trang thai moi!
-    await FoodDrink.update({ isAvailable: newStatus }, {
-      where: {
-        id: foodDrink
+    await FoodDrink.update(
+      { isAvailable: newStatus },
+      {
+        where: {
+          id: foodDrink,
+        },
       }
-    });
+    );
 
     return {
-      newStatus
+      newStatus,
     };
   };
 
-  static updateFoodDrink = async ({ id, shopId, name, description, price, image }) => {
+  static updateFoodDrink = async ({
+    id,
+    shopId,
+    name,
+    description,
+    price,
+    image,
+  }) => {
     const foundFoodDrink = await FoodDrink.findByPk(id);
     if (!foundFoodDrink) throw new BadRequestError("Food drink not found!");
     const isValidShop = foundFoodDrink.shopId === shopId;
-    if (!isValidShop) throw new ForbiddenError("You have not permission to change this food drink!");
+    if (!isValidShop)
+      throw new ForbiddenError(
+        "You have not permission to change this food drink!"
+      );
 
     const updateData = {};
     if (name !== undefined) {
@@ -69,7 +90,7 @@ class FoodDrinkService {
     }
 
     const result = await FoodDrink.update(updateData, {
-      where: { id: id }
+      where: { id: id },
     });
     return result;
   };
@@ -77,18 +98,23 @@ class FoodDrinkService {
   static deleteFoodDrink = async (foodDrinkId) => {
     return await FoodDrink.destroy({
       where: {
-        id: foodDrinkId
-      }
+        id: foodDrinkId,
+      },
     });
   };
 
   static uploadFoodDrinkImage = async ({ id, image }) => {
     const folderName = "FoodDrink";
-    const { url } = await UploadService.uploadOneFile({ file: image, folderName });
+    const { url } = await UploadService.uploadOneFile({
+      file: image,
+      folderName,
+    });
     return await FoodDrinkRepository.updateFoodDrink({ id, image: url });
   };
+
+  static getFoodDrinkInfo = async (id) => {
+    return await FoodDrinkRepository.getFoodDrinkInfo(id);
+  };
 }
-
-
 
 module.exports = FoodDrinkService;

@@ -1,9 +1,10 @@
-const Sequelize = require('sequelize');
-const { db: { username, password, database, host, dialect } } = require('../config/config');
-
+const Sequelize = require("sequelize");
+const {
+  db: { username, password, database, host, dialect },
+} = require("../config/config");
 
 class Database {
-  constructor () {
+  constructor() {
     this.connect();
   }
 
@@ -12,13 +13,11 @@ class Database {
       host,
       dialect,
       logging: console.log, // Đặt logging thành console.log để log các truy vấn SQL
-      dialectOptions: {
-        useUTC: true, // for reading from database
-      },
+      dialectOptions: {},
       define: {
         underscored: false,
         freezeTableName: true, //use singular table name
-        timestamps: false,  // I do not want timestamp fields by default
+        timestamps: false, // I do not want timestamp fields by default
       },
     });
     sequelize.sync();
@@ -35,16 +34,8 @@ class Database {
   getSequelize() {
     return this.sequelize;
   }
-
 }
-
-
-
-
 
 const mysqlInstance = Database.getInstance();
 
 module.exports = mysqlInstance.getSequelize();
-
-
-

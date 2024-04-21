@@ -1,52 +1,54 @@
-const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../db/mysql.connect');
-const MODEL_NAME = 'Review';
+const { Model, DataTypes } = require("sequelize");
+const sequelize = require("../db/mysql.connect");
+const MODEL_NAME = "Review";
 
-const User = require('./User');
-const Shop = require('./Shop');
+const User = require("./User");
+const Shop = require("./Shop");
 
 class Review extends Model {}
-Review.init({
+Review.init(
+  {
     reviewId: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
     },
     shopId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: Shop,
-            key: 'id'
-        }
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: Shop,
+        key: "id",
+      },
     },
     userId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: User,
-            key: 'id'
-        }
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: User,
+        key: "id",
+      },
     },
     rating: {
-        type: DataTypes.INTEGER,
-        validate: {
-            ratingRange(value) {
-                if (value < 1 || value > 5) {
-                    throw new Error("rating must be from 1 to 5 star");
-                }
-            }
-        }
+      type: DataTypes.INTEGER,
+      validate: {
+        ratingRange(value) {
+          if (value < 1 || value > 5) {
+            throw new Error("rating must be from 1 to 5 star");
+          }
+        },
+      },
     },
     comment: {
-        type: DataTypes.STRING,
-        allowNull: false
+      type: DataTypes.STRING,
+      allowNull: false,
     },
-
-}, {
+  },
+  {
     sequelize: sequelize,
     modelName: MODEL_NAME,
     timestamps: true,
-    updatedAt: false
-});
+    updatedAt: false,
+  }
+);
 module.exports = Review;
