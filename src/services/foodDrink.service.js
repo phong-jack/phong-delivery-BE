@@ -18,11 +18,11 @@ class FoodDrinkService {
     price,
     categoryId,
     shopId,
+    image,
   }) => {
     const existFoodDrink = await FoodDrink.findOne({
-      name,
-      categoryId,
-      shopId,
+      where: { name, categoryId, shopId },
+      raw: true,
     });
     if (existFoodDrink) {
       throw new BadRequestError("this food/drink already exist!");
@@ -33,29 +33,30 @@ class FoodDrinkService {
       price,
       categoryId,
       shopId,
+      image,
     });
 
     return newFoodDrink;
   };
 
-  static toggleFoodDrinkStatus = async (foodDrinkId) => {
-    const foodDrink = await FoodDrink.findByPk(foodDrinkId);
+  static toggleFoodDrinkStatus = async ({ foodDrinkId, isAvailable }) => {
+    const foodDrink = await FoodDrink.findByPk(foodDrinkId, { raw: true });
     if (!foodDrink) {
       throw new BadRequestError("Food or drink not found!!");
     }
-    const newStatus = !foodDrink.isAvailable;
+    console.log(foodDrink);
     //Cap nhat trang thai moi!
     await FoodDrink.update(
-      { isAvailable: newStatus },
+      { isAvailable: isAvailable },
       {
         where: {
-          id: foodDrink,
+          id: foodDrinkId,
         },
       }
     );
 
     return {
-      newStatus,
+      isAvailable,
     };
   };
 
@@ -74,7 +75,6 @@ class FoodDrinkService {
       throw new ForbiddenError(
         "You have not permission to change this food drink!"
       );
-
     const updateData = {};
     if (name !== undefined) {
       updateData.name = name;
@@ -88,14 +88,17 @@ class FoodDrinkService {
     if (image !== undefined) {
       updateData.image = image;
     }
-
     const result = await FoodDrink.update(updateData, {
       where: { id: id },
     });
+    if (result == 0) throw new BadRequestError("No things change!");
+
     return result;
   };
 
   static deleteFoodDrink = async (foodDrinkId) => {
+    const foodDrink = await FoodDrinkRepository.getFoodDrinkInfo(foodDrinkId);
+    if (!foodDrink) throw new BadRequestError("This food drink not found!");
     return await FoodDrink.destroy({
       where: {
         id: foodDrinkId,
@@ -113,8 +116,26 @@ class FoodDrinkService {
   };
 
   static getFoodDrinkInfo = async (id) => {
-    return await FoodDrinkRepository.getFoodDrinkInfo(id);
+    const foodDrink = await FoodDrinkRepository.getFoodDrinkInfo(id);
+    if (!foodDrink) throw new BadRequestError("This food drink not found!");
+    return foodDrink;
   };
+
+  static calculatorFoodDrink = async ({ id, quantity }) => {
+    const foodDrink = await FoodDrinkRepository.getFoodDrinkInfo(id);
+    if (!foodDrink) throw new BadRequestError("Food drink not found!");
+    return Number(foodDrink.price * quantity);
+  };
+
+  static async findFoodDrinkByShopPaginate({ shopId, page = 1, perPage = 15 }) {
+    const foodDrinks = FoodDrinkRepository.findFoodDrinkByShopPaginate({
+      shopId,
+      page,
+      perPage,
+    });
+
+    return foodDrinks;
+  }
 }
 
 module.exports = FoodDrinkService;

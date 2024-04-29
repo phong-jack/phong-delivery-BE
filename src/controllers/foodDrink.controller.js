@@ -26,7 +26,6 @@ class FoodDrinkControler {
     new CREATED({
       message: "Created new product!",
       metadata: await FoodDrinkService.createNewFoodDrink({
-        shopId: req.user.shopId,
         ...req.body,
       }),
     }).send(res);
@@ -34,9 +33,10 @@ class FoodDrinkControler {
   async toggleFoodDrinkStatus(req, res) {
     new SuccessResponse({
       message: "Change food drink status ok!",
-      metadata: await FoodDrinkService.toggleFoodDrinkStatus(
-        req.body.foodDrinkId
-      ),
+      metadata: await FoodDrinkService.toggleFoodDrinkStatus({
+        foodDrinkId: req.params.id,
+        isAvailable: req.body.isAvailable,
+      }),
     }).send(res);
   }
   async updateFoodDrink(req, res) {
@@ -51,13 +51,30 @@ class FoodDrinkControler {
   }
 
   async uploadFoodDrinkImage(req, res) {
-    console.log("CHECK image", req.file);
     new OK({
       message: "Update food drink image success!",
       metadata: await FoodDrinkService.uploadFoodDrinkImage({
         id: req.params.id,
         image: req.file,
       }),
+    }).send(res);
+  }
+
+  async getFoodDrinkByShopPaginate(req, res) {
+    new OK({
+      message: "Get food drink image success!",
+      metadata: await FoodDrinkService.findFoodDrinkByShopPaginate({
+        shopId: req.params.id,
+        page: req.query.page,
+        perPage: req.query.per_page,
+      }),
+    }).send(res);
+  }
+
+  async deleteFoodDrink(req, res) {
+    new OK({
+      message: "Delete food drink success!",
+      metadata: await FoodDrinkService.deleteFoodDrink(req.params.id),
     }).send(res);
   }
 }

@@ -1,9 +1,8 @@
-const JWT = require('jsonwebtoken');
-const { AuthFailError, ForbiddenError } = require('../core/error.response');
-const { authConst, HEADERS } = require('../constant');
-const { asyncHandler } = require('../helpers');
-const KeyTokenSerivce = require('../services/keyToken.service');
-
+const JWT = require("jsonwebtoken");
+const { AuthFailError, ForbiddenError } = require("../core/error.response");
+const { authConst, HEADERS } = require("../constant");
+const { asyncHandler } = require("../helpers");
+const KeyTokenSerivce = require("../services/keyToken.service");
 
 const verifyToken = asyncHandler(async (req, res, next) => {
   const accessToken = req.headers[HEADERS.ACCESS_TOKEN];
@@ -13,6 +12,7 @@ const verifyToken = asyncHandler(async (req, res, next) => {
   try {
     const decodeUser = await JWT.verify(accessToken, authConst.JWT_ACCESSKEY);
     const keyStore = await KeyTokenSerivce.findByUserId(decodeUser.id);
+    console.log(decodeUser);
     req.user = decodeUser;
     req.keyStore = keyStore;
     next();
@@ -20,9 +20,6 @@ const verifyToken = asyncHandler(async (req, res, next) => {
     next(error);
   }
 });
-
-
-
 
 //check shop
 const checkShopPermisson = (req, res, next) => {
@@ -35,5 +32,5 @@ const checkShopPermisson = (req, res, next) => {
 
 module.exports = {
   verifyToken,
-  checkShopPermisson
+  checkShopPermisson,
 };

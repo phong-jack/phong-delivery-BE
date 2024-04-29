@@ -7,7 +7,7 @@ async function hashPassword(password) {
 }
 
 async function comparePassword(password, passwordCheck) {
-  return await bcrypt.compare(password, passwordCheck);
+  return bcrypt.compareSync(password, passwordCheck);
 }
 
 function generateAccessToken(payload) {

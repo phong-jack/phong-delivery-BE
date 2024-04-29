@@ -3,7 +3,7 @@ const User = require("../../models/User");
 class UserRepository {
   static async findById({ id }) {
     if (!id) return null;
-    const user = await User.findOne({ where: { id } });
+    const user = await User.findOne({ where: { id }, raw: true });
     console.log(user);
     return user;
   }

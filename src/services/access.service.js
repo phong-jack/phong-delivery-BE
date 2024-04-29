@@ -15,6 +15,7 @@ const { pickAnObject, sendMail } = require("../utils/func.util");
 const JWT = require("jsonwebtoken");
 const KeyTokenSerivce = require("./keyToken.service");
 const KeyToken = require("../models/KeyToken");
+const { getUserInfo } = require("./user.service");
 
 class AccessService {
   static async login({ username, password, res }) {
@@ -28,7 +29,7 @@ class AccessService {
     if (!user) {
       throw new AuthFailError("Wrong username!");
     }
-    const validPassword = comparePassword(password, user.password);
+    const validPassword = await comparePassword(password, user.password);
     if (!validPassword) {
       throw new AuthFailError("Wrong password!");
     }
@@ -50,13 +51,6 @@ class AccessService {
     const refreshToken = generateRefreshToken(userInfo);
 
     await KeyTokenSerivce.createKeyToken({ userId, refreshToken });
-
-    res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
-      secure: false,
-      path: "/",
-      sameSite: "strict",
-    });
 
     return {
       ...userInfo,
@@ -151,6 +145,16 @@ class AccessService {
       subject,
       `Link xac thuc tai khoan: <a href=${verifyLink}>${verifyLink}<a/>`
     );
+  }
+
+  static async changePassword({ id, oldPassword, newPassword }) {
+    const user = await getUserInfo({ id });
+    if (!user) throw BadRequestError("This user is not exist!");
+    const isValidPassword = comparePassword(oldPassword, user.password);
+    if (!isValidPassword) throw new BadRequestError("Wrong password!");
+    const hashPass = await hashPassword(newPassword);
+
+    return await User.update({ password: hashPass }, { where: { id: id } });
   }
 }
 

@@ -1,7 +1,11 @@
+const { ORDER_STATUS } = require("../constant");
 const { BadRequestError } = require("../core/error.response");
 const { Order } = require("../models");
+const { sortOrdersByUpdatedAtDesc } = require("../utils/func.util");
+const FoodDrinkService = require("./foodDrink.service");
 const OrderDetailService = require("./orderDetail.service");
 const OrderRepository = require("./repositories/order.repo");
+const ShopService = require("./shop.service");
 
 class OrderService {
   //SHOP ROLE
@@ -27,12 +31,20 @@ class OrderService {
    * 3. tra ve thong tin don hang vua duoc tao
    * 4. Neu co loi thi nem 404
    */
-  static async createNewOrder({ userId, shopId, orderDetails = [] }) {
+  static async createNewOrder({
+    userId,
+    shopId,
+    address,
+    note,
+    orderDetails = [],
+  }) {
     //Tao don hang
     const { dataValues: newOrder } = await Order.create(
       {
         userId,
         shopId,
+        address,
+        note,
       },
       { plan: true }
     );
@@ -58,8 +70,154 @@ class OrderService {
   }
 
   static async getStatistics({ shopId }) {
-    console.log("Check shopid:", shopId);
     return await OrderRepository.getStatiticsByMonth({ shopId, month: 4 });
+  }
+
+  static async calculatorOrder({ id }) {
+    const orderDetails = await OrderDetailService.getOrderDetailByOrder({
+      orderId: id,
+    });
+    let totalAmout = 0;
+    for (const orderDetail of orderDetails) {
+      const { foodDrinkId, quantity } = orderDetail;
+      const amout = await FoodDrinkService.calculatorFoodDrink({
+        id: foodDrinkId,
+        quantity,
+      });
+      totalAmout += amout;
+    }
+    return totalAmout;
+  }
+
+  static async getFoodDrinksByOrderId({ id }) {
+    const orderDetails = await OrderDetailService.getOrderDetailByOrder({
+      orderId: id,
+    });
+    const foodDrinks = [];
+    for (const orderDetail of orderDetails) {
+      const { foodDrinkId } = orderDetail;
+      const foodDrink = await FoodDrinkService.getFoodDrinkInfo(foodDrinkId);
+      foodDrinks.push({ ...foodDrink, quantity: orderDetail.quantity });
+    }
+    return foodDrinks;
+  }
+
+  static async getOrderDetailsByUser({ userId }) {
+    const orders = await OrderRepository.findAllByUser({ userId });
+
+    const newOrders = [];
+    for (const order of orders) {
+      const foodDrinks = await OrderService.getFoodDrinksByOrderId({
+        id: order.orderId,
+      });
+      const totalAmount = await OrderService.calculatorOrder({
+        id: order.orderId,
+      });
+      const shop = await ShopService.getShopDetail({ shopId: order.shopId });
+      const newOrder = {
+        ...order,
+        orderId: order.orderId,
+        shopId: order.shopId,
+        shopName: shop.name,
+        statusCode: order.statusCode,
+        totalAmount,
+        foodDrinks,
+      };
+
+      newOrders.push(newOrder);
+    }
+
+    return newOrders;
+  }
+
+  static async getOrderDetailById({ orderId }) {
+    const order = await OrderRepository.findById({ id: orderId });
+    const foodDrinks = await OrderService.getFoodDrinksByOrderId({
+      id: orderId,
+    });
+    const totalAmount = await OrderService.calculatorOrder({
+      id: orderId,
+    });
+    const newOrder = {
+      ...order,
+      totalAmount: totalAmount,
+      foodDrinks,
+    };
+    return newOrder;
+  }
+
+  //Dieu chinh trang thai don hang
+  static async toggleOrderStatus({ orderId, orderStatus }) {
+    const order = await this.getOrderDetailById({ orderId });
+
+    if (!orderStatus) throw new BadRequestError("order status can't null");
+    if (orderStatus == ORDER_STATUS.INIT)
+      throw new BadRequestError("Không thể chuyển sang trạng thái này");
+    if (orderStatus == order.statusCode)
+      throw new BadRequestError("Không thể chuyển trạng thái trùng nhau!");
+
+    //Hủy đơn
+    if (orderStatus == ORDER_STATUS.CANCEL) {
+      if (order.statusCode != ORDER_STATUS.INIT) {
+        throw new BadRequestError("Không thể hủy đơn hàng");
+      }
+      return await OrderRepository.updateOrderStatus({ orderId, orderStatus });
+    }
+    // Xác nhận đơn
+    if (orderStatus == ORDER_STATUS.ACCEPTED) {
+      if (order.statusCode != ORDER_STATUS.INIT) {
+        throw new BadRequestError("Không thể xác nhận đơn hàng");
+      }
+      return await OrderRepository.updateOrderStatus({ orderId, orderStatus });
+    }
+
+    if (orderStatus == ORDER_STATUS.SHIPPING) {
+      if (order.statusCode != ORDER_STATUS.ACCEPTED) {
+        throw new BadRequestError("Không thể chuyển giao trạng thái ship");
+      }
+      return await OrderRepository.updateOrderStatus({ orderId, orderStatus });
+    }
+
+    if (orderStatus == ORDER_STATUS.FINISHED) {
+      if (order.statusCode != ORDER_STATUS.SHIPPING) {
+        throw new BadRequestError(
+          "Không phải đang ship sao mà chuyển qua được nhận hàng cha!"
+        );
+      }
+      return await OrderRepository.updateOrderStatus({ orderId, orderStatus });
+    }
+    // Quán có quyền từ chối luôn
+    if (orderStatus == ORDER_STATUS.REJECTED) {
+      return await OrderRepository.updateOrderStatus({ orderId, orderStatus });
+    }
+  }
+
+  //get order paginate
+  static async findOrderByShopPaginate({ shopId, page, perPage = 10 }) {
+    const orders = await OrderRepository.findOrderByShopPaginate({
+      shopId,
+      page: +page || 1,
+      perPage,
+    });
+    const orderDatas = orders.data;
+    const newOrderDatas = [];
+    for (const order of orderDatas) {
+      const orderDetail = await this.getOrderDetailById({
+        orderId: order.orderId,
+      });
+      const totalAmount = await OrderService.calculatorOrder({
+        id: order.orderId,
+      });
+      const shop = await ShopService.getShopDetail({ shopId: order.shopId });
+      const newOrderDetail = {
+        ...order,
+        totalAmout: totalAmount,
+        shopName: shop.name,
+        foodDrinks: orderDetail.foodDrinks,
+      };
+      newOrderDatas.push(newOrderDetail);
+    }
+    return { ...orders, data: newOrderDatas };
   }
 }
 

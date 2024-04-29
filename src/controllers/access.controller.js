@@ -45,6 +45,16 @@ class AccessController {
       ),
     }).send(res);
   };
+
+  changePassword = async (req, res) => {
+    new OK({
+      message: "Change password success!",
+      metadata: await AccessService.changePassword({
+        id: req.params.id,
+        ...req.body,
+      }),
+    }).send(res);
+  };
 }
 
 module.exports = new AccessController();

@@ -1,3 +1,4 @@
+const { BadRequestError } = require("../core/error.response");
 const Shop = require("../models/Shop");
 const CategoryRepository = require("./repositories/category.repo");
 const FoodDrinkRepository = require("./repositories/foodDrink.repo");
@@ -9,7 +10,6 @@ class ShopService {
   }
 
   static async findShopPaginate({ page, perPage = 16 }) {
-    console.log("check page at service :: ", page);
     const result = await ShopRepository.findShopPaginate({ page, perPage });
     return result;
   }
@@ -39,6 +39,15 @@ class ShopService {
 
   static async getShopFoodDrink({ shopId }) {
     return await FoodDrinkRepository.findFoodDrinkByShop({ shopId });
+  }
+
+  static async toggleShopStatus({ shopId, isWorking }) {
+    if (isWorking === undefined)
+      throw new BadRequestError("Missing is working param");
+
+    const result = await ShopRepository.updateStatus({ id: shopId, isWorking });
+    if (+result === 0) throw Error("No thing can be change!");
+    return result;
   }
 }
 

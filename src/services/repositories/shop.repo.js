@@ -1,3 +1,4 @@
+const { raw } = require("mysql2");
 const Shop = require("../../models/Shop");
 
 class ShopRepository {
@@ -6,10 +7,9 @@ class ShopRepository {
   }
 
   static async findById(shopId) {
-    return await Shop.findByPk(shopId);
+    return await Shop.findByPk(shopId, { raw: true });
   }
   static async findShopPaginate({ query = {}, page, perPage }) {
-    console.log("check page : ", page);
     const offset = (page - 1) * perPage;
     const limit = perPage;
     const { count, rows } = await Shop.findAndCountAll({
@@ -26,6 +26,10 @@ class ShopRepository {
       totalPages,
       data: rows,
     };
+  }
+
+  static async updateStatus({ id, isWorking }) {
+    return await Shop.update({ isWorking }, { where: { id } });
   }
 }
 

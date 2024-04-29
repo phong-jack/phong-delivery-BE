@@ -39,6 +39,16 @@ class ShopController {
       metadata: await ShopService.getShopFoodDrink({ shopId: req.params.id }),
     }).send(res);
   }
+
+  async toggleShopStatus(req, res) {
+    new OK({
+      message: "Change shop status oke!",
+      metadata: await ShopService.toggleShopStatus({
+        shopId: req.params.id,
+        isWorking: req.body.isWorking,
+      }),
+    }).send(res);
+  }
 }
 
 module.exports = new ShopController();

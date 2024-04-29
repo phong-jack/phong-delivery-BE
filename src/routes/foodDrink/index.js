@@ -7,32 +7,33 @@ const {
   toggleFoodDrinkStatus,
   uploadFoodDrinkImage,
   getFoodDrinkInfo,
+  getFoodDrinkByShopPaginate,
+  createNewFoodDrink,
+  deleteFoodDrink,
+  updateFoodDrink,
 } = require("../../controllers/foodDrink.controller");
 const { uploadSingle } = require("../../middleware/upload.middleware");
 const router = express.Router();
 
 //Khong can check token
-router.get(
-  "/getShopProduct/:shopId",
-  asyncHandler(getFoodDrinkByShopFromClient)
-);
-router.get("/:id", asyncHandler(getFoodDrinkInfo));
+router
+  .get("/getShopProduct/:shopId", asyncHandler(getFoodDrinkByShopFromClient))
+  .get("/shop/:id", asyncHandler(getFoodDrinkByShopPaginate))
+  .get("/:id", asyncHandler(getFoodDrinkInfo));
 
 //Check token
 router
-  .use(verifyToken)
-  .get(
-    "/getProductFromShop",
-    checkShopPermisson,
-    asyncHandler(getFoodDrinkByShop)
-  )
-  .post("/changeStatus", asyncHandler(toggleFoodDrinkStatus))
+  .use(verifyToken, checkShopPermisson)
+  .get("/getProductFromShop", asyncHandler(getFoodDrinkByShop))
+  .put("/changeStatus/:id", asyncHandler(toggleFoodDrinkStatus))
   .post(
     "/uploadImage/:id",
-    checkShopPermisson,
     uploadSingle("image"),
     asyncHandler(uploadFoodDrinkImage)
-  );
+  )
+  .post("/create", asyncHandler(createNewFoodDrink))
+  .delete("/:id", asyncHandler(deleteFoodDrink))
+  .put("/update/:id", asyncHandler(updateFoodDrink));
 
 module.exports = router;
 // cha biet nua
