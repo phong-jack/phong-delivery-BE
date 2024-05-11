@@ -21,6 +21,28 @@ class OrderRepository {
     const results = await sequelize.query(query, {
       type: sequelize.QueryTypes.SELECT,
     });
+    console.log(shopId);
+    return results;
+  }
+
+  static async statiticsByYear({ shopId, year }) {
+    const sqlQuery = `
+  SELECT 
+    YEAR(updatedAt) AS order_year,
+    MONTH(updatedAt) AS order_month,
+    COUNT(updatedAt) AS total_orders
+  FROM 
+    \`order\`
+  WHERE 
+    YEAR(updatedAt) = ${year}
+    AND shopId = ${shopId}
+  GROUP BY 
+    YEAR(updatedAt), MONTH(updatedAt);
+`;
+
+    const results = await sequelize.query(sqlQuery, {
+      type: sequelize.QueryTypes.SELECT,
+    });
     return results;
   }
 
@@ -34,7 +56,7 @@ class OrderRepository {
 
   static async findAllByUser({ userId }) {
     return await Order.findAll({
-      userId,
+      where: { userId },
       raw: true,
       order: [["updatedAt", "DESC"]],
     });

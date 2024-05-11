@@ -13,6 +13,18 @@ class ShopController {
     new OK({
       message: "Get shops success!",
       metadata: await ShopService.findShopPaginate({
+        query: req.query.q,
+        page: req.query.page,
+        perPage: req.query.per_page,
+      }),
+    }).send(res);
+  }
+
+  async findShopByQueryPaginate(req, res) {
+    new OK({
+      message: "Get shops success!",
+      metadata: await ShopService.findShopByQueryPaginate({
+        query: req.query.q,
         page: req.query.page,
         perPage: req.query.per_page,
       }),

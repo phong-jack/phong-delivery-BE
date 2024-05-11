@@ -9,6 +9,7 @@ const {
   getOrderDetailById,
   toggleOrderStatus,
   getOrderByShopPaginate,
+  statisticOrderByYear,
 } = require("../../controllers/order.controller");
 const router = express.Router();
 
@@ -21,11 +22,9 @@ router
   .post("/toggleStatus/:id", asyncHandler(toggleOrderStatus))
   .get("/shop/:id", asyncHandler(getOrderByShopPaginate));
 
-router.get(
-  "/getStatistics",
-  verifyToken,
-  checkShopPermisson,
-  asyncHandler(getStatistics)
-);
+router
+  .use(verifyToken, checkShopPermisson)
+  .get("/getStatistics", asyncHandler(getStatistics))
+  .get("/statisticsByYear/:year", asyncHandler(statisticOrderByYear));
 
 module.exports = router;

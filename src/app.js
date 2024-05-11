@@ -4,16 +4,18 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const { errorHandler, notFoundHandler } = require("./helpers");
 const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
 
 //config
 const app = express();
 app.use(cors({ credentials: true }));
-app.use(helmet());
-app.use(morgan("dev"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(cookieParser());
 require("dotenv").config();
+app.use(helmet());
+app.use(morgan("dev"));
 
 // init DB
 require("./db/mysql.connect");

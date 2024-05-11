@@ -74,6 +74,16 @@ class OrderController {
       }),
     }).send(res);
   }
+
+  async statisticOrderByYear(req, res) {
+    new OK({
+      message: "Statistic Order success!",
+      metadata: await OrderService.statisticOrderByYear({
+        shopId: req.user.shopId,
+        year: req.params.year,
+      }),
+    }).send(res);
+  }
 }
 
 module.exports = new OrderController();

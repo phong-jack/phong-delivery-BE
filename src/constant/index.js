@@ -25,7 +25,7 @@ const ORDER_STATUS = {
 
 const PAYMENT_METHOD = {
   COD: "COD",
-  VNPAY: "VNPAY",
+  ONLINE: "ONLINE",
 };
 
 module.exports = {

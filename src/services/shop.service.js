@@ -9,8 +9,21 @@ class ShopService {
     return await ShopRepository.findAll();
   }
 
-  static async findShopPaginate({ page, perPage = 16 }) {
-    const result = await ShopRepository.findShopPaginate({ page, perPage });
+  static async findShopPaginate({ query, page = 1, perPage = 16 }) {
+    const result = await ShopRepository.findShopPaginate({
+      query: {},
+      page,
+      perPage,
+    });
+    return result;
+  }
+
+  static async findShopByQueryPaginate({ query = "", page = 1, perPage = 16 }) {
+    const result = await ShopRepository.findShopByQueryPaginate({
+      query,
+      page,
+      perPage,
+    });
     return result;
   }
 

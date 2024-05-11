@@ -79,15 +79,18 @@ class AccessService {
       throw new BadRequestError("Email already exist!!");
     }
 
-    const newUser = await User.create({
+    const { dataValues: newUser } = await User.create({
       username,
       password: hashPass,
       fullName,
       email,
       phone,
     });
+    const accessToken = generateAccessToken(newUser);
+    this.sendVerifyRequest(accessToken);
+
     return {
-      newUser,
+      user: newUser,
     };
   }
 
@@ -139,11 +142,12 @@ class AccessService {
     const subject = `Mail xác thực tài khoản của bạn`;
     const verifyLink = `http://localhost:3055/api/v1/verifyUser?accesstoken=${accessToken}`;
     const decode = await JWT.verify(accessToken, authConst.JWT_ACCESSKEY);
+    console.log(decode);
     const { email } = decode;
     return await sendMail(
       email,
       subject,
-      `Link xac thuc tai khoan: <a href=${verifyLink}>${verifyLink}<a/>`
+      `Link xac thuc tai khoan: <a href=${verifyLink}>Verify link<a/>`
     );
   }
 

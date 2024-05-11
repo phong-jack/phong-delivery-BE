@@ -9,20 +9,22 @@ class AccessController {
       metadata: await AccessService.login({ ...req.body, res }),
     }).send(res);
   };
+
   register = async (req, res) => {
     new CREATED({
       message: "Registered!!",
-      metadata: await AccessService.register(res.body),
+      metadata: await AccessService.register({ ...req.body }),
     }).send(res);
   };
+
   logout = async (req, res) => {
     new OK({
       message: "Logout success!",
       metadata: await AccessService.logout(req.keyStore),
     }).send(res);
   };
+
   requestRefreshToken = async (req, res) => {
-    console.log("check req:: ", req.headers);
     new OK({
       message: "Refreshed token !!",
       metadata: await AccessService.requestRefreshToken({
@@ -31,12 +33,14 @@ class AccessController {
       }),
     }).send(res);
   };
+
   verifyUser = async (req, res) => {
     new OK({
       message: "Verify mail ok!",
       metadata: await AccessService.verifyUser(req.query[PARAMS.ACCESS_TOKEN]),
     }).send(res);
   };
+
   sendVerifyRequest = async (req, res) => {
     new OK({
       message: "Email sent!",

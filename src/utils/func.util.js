@@ -41,9 +41,20 @@ function sortOrdersByUpdatedAtDesc(orders) {
   return orders;
 }
 
+function sortObject(obj) {
+  var sorted = {};
+  var keys = Object.keys(obj);
+  keys.sort();
+  keys.forEach(function (key) {
+    sorted[key] = obj[key];
+  });
+  return sorted;
+}
+
 module.exports = {
   pickAnObject,
   sendMail,
   getSlug,
   sortOrdersByUpdatedAtDesc,
+  sortObject,
 };

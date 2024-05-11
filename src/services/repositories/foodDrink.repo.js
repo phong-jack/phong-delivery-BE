@@ -2,7 +2,7 @@ const FoodDrink = require("../../models/FoodDrink");
 
 class FoodDrinkRepository {
   static async getFoodDrinkInfo(id) {
-    return await FoodDrink.findByPk(id, { raw: true });
+    return await FoodDrink.findByPk(id, { paranoid: false, raw: true });
   }
 
   static async updateFoodDrink({ id, image }) {

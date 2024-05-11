@@ -52,7 +52,7 @@ Order.init(
       defaultValue: ORDER_STATUS.INIT,
     },
     paymentMethod: {
-      type: DataTypes.ENUM(PAYMENT_METHOD.COD, PAYMENT_METHOD.VNPAY),
+      type: DataTypes.ENUM(PAYMENT_METHOD.COD, PAYMENT_METHOD.ONLINE),
       defaultValue: PAYMENT_METHOD.COD,
     },
   },

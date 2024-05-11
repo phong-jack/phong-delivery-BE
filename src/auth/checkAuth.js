@@ -12,7 +12,6 @@ const verifyToken = asyncHandler(async (req, res, next) => {
   try {
     const decodeUser = await JWT.verify(accessToken, authConst.JWT_ACCESSKEY);
     const keyStore = await KeyTokenSerivce.findByUserId(decodeUser.id);
-    console.log(decodeUser);
     req.user = decodeUser;
     req.keyStore = keyStore;
     next();
