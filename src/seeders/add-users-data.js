@@ -1,105 +1,245 @@
-'use strict';
-const { hashPassword } = require('../utils/auth.util');
+"use strict";
+const { hashPassword } = require("../utils/auth.util");
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-    async up(queryInterface, Sequelize) {
-        /**
-         * Add seed commands here.
-         *
-         * Example:
-         * await queryInterface.bulkInsert('People', [{
-         *   name: 'John Doe',
-         *   isBetaMember: false
-         * }], {});
-        */
-        await queryInterface.bulkInsert('user',
-            [
-                {
-                    username: "phongpro5141",
-                    password: await hashPassword("123456"),
-                    fullName: "Ngô Tiến Phong",
-                    email: "ngotienphong@gmail.com",
-                    phone: "0123456789",
-                    address: "44 Trần Thúc Nhẫn",
-                    createdAt: new Date()
-                },
-                {
-                    username: "accoutdat09",
-                    password: await hashPassword("123456789"),
-                    fullName: "Nguyễn Tiến Đạt",
-                    email: "nguyentiendat3@gmail.com",
-                    phone: "",
-                    address: "44 Nguyễn Huệ",
-                    createdAt: new Date()
-                },
-                {
-                    username: "nguyendangkyquang",
-                    password: await hashPassword("123454"),
-                    fullName: "Nguyễn Đăng Kỳ Quang",
-                    email: "nguyendangkyquang@gmail.com",
-                    phone: "",
-                    address: "315 Đặng Tất",
-                    createdAt: new Date()
-                },
-                {
-                    username: "thanlong51",
-                    password: await hashPassword("123456"),
-                    fullName: "Ngô Thanh Long",
-                    email: "thanong51g@gmail.com",
-                    phone: "",
-                    address: "32 Nguyễn Trãi",
-                    createdAt: new Date()
-                },
-                {
-                    username: "nguyenductuyen",
-                    password: await hashPassword("123456"),
-                    fullName: "Nguyễn Đức Tuyến",
-                    email: "nguyenductuyen@gmail.com",
-                    phone: "",
-                    address: "49 Nguyễn Huệ",
-                    createdAt: new Date()
-                },
-                {
-                    username: "levanlam55",
-                    password: await hashPassword("123456"),
-                    fullName: "Lê Văn Lâm",
-                    email: "levanlam55@gmail.com",
-                    phone: "",
-                    address: "33 Lê Thánh Tôn",
-                    createdAt: new Date()
-                },
-                {
-                    username: "hottohbt",
-                    password: await hashPassword("123456"),
-                    fullName: "Hotto",
-                    email: "hottoHbt@gmail.com",
-                    phone: "",
-                    address: "34 Hai Bà Trưng, P. Vĩnh Ninh, Tp. Huế, Huế",
-                    isShop: true,
-                    shopId: 11,
-                    createdAt: new Date()
-                },
-                {
-                    username: "1985bbq",
-                    password: await hashPassword("123456"),
-                    fullName: "1985BBQ",
-                    email: "1985bbq@gmail.com",
-                    phone: "",
-                    address: "2 Bà Triệu, P. Phú Hội, Tp. Huế, Huế",
-                    isShop: true,
-                    shopId: 1,
-                    createdAt: new Date()
-                },
-            ]);
-    },
+  async up(queryInterface, Sequelize) {
+    /**
+     * Add seed commands here.
+     *
+     * Example:
+     * await queryInterface.bulkInsert('People', [{
+     *   name: 'John Doe',
+     *   isBetaMember: false
+     * }], {});
+     */
+    await queryInterface.bulkInsert("user", [
+      {
+        username: "phongpro5141",
+        password: await hashPassword("123456"),
+        fullName: "Ngô Tiến Phong",
+        email: "ngotienphong@gmail.com",
+        phone: "0123456789",
+        address: "15 Đặng Tất",
+        createdAt: new Date(),
+      },
+      {
+        username: "test",
+        password: await hashPassword("123456"),
+        fullName: "test name",
+        email: "test@gmail.com",
+        phone: "0123456789",
+        address: "15 Đặng Tất",
+        createdAt: new Date(),
+      },
+      {
+        username: "1985bbq",
+        password: await hashPassword("123456"),
+        fullName: "1985BBQ",
+        email: "1985bbq@gmail.com",
+        phone: "",
+        address: "2 Bà Triệu, P. Phú Hội, Tp. Huế, Huế",
+        isShop: true,
+        shopId: 1,
+        createdAt: new Date(),
+      },
+      {
+        username: "donaldtrung",
+        password: await hashPassword("123456"),
+        fullName: "Donald Trung",
+        email: "donaldtrung@gmail.com",
+        phone: "",
+        address: "28 Hoàng Văn Thụ, P. An Đông, Tp. Huế, Huế",
+        isShop: true,
+        shopId: 2,
+        createdAt: new Date(),
+      },
+      {
+        username: "jollibee",
+        password: await hashPassword("123456"),
+        fullName: "Jollibee",
+        email: "jollibee@gmail.com",
+        phone: "",
+        address:
+          "Tầng 4, Vincom Plaza, 50A Hùng Vương, P. Phú Nhuận, Tp. Huế, Huế",
+        isShop: true,
+        shopId: 3,
+        createdAt: new Date(),
+      },
+      {
+        username: "kinhbac",
+        password: await hashPassword("123456"),
+        fullName: "Kinh Bắc",
+        email: "kinhbac@gmail.com",
+        phone: "",
+        address: "6/16 Trường Chinh Tổ 2, P. Xuân Phú, Tp. Huế, Huế",
+        isShop: true,
+        shopId: 4,
+        createdAt: new Date(),
+      },
+      {
+        username: "xuqang",
+        password: await hashPassword("123456"),
+        fullName: "Đặc Sản Xứ Quảng",
+        email: "xuqang@gmail.com",
+        phone: "",
+        address: "103/19 Nguyễn Trường Tộ, P. Vĩnh Ninh, Tp. Huế, Huế",
+        isShop: true,
+        shopId: 5,
+        createdAt: new Date(),
+      },
+      {
+        username: "nhacam",
+        password: await hashPassword("123456"),
+        fullName: "Nhà Cám",
+        email: "nhacam@gmail.com",
+        phone: "",
+        address: "33 Nguyễn Lương Bằng, P. Phú Hội, Tp. Huế, Huế",
+        isShop: true,
+        shopId: 6,
+        createdAt: new Date(),
+      },
+      {
+        username: "bephohem",
+        password: await hashPassword("123456"),
+        fullName: "Bếp Ở Hẻm 34",
+        email: "bephohem@gmail.com",
+        phone: "",
+        address: "7/34 Nguyễn Tri Phương, P. Phú Nhuận, Tp. Huế, Huế",
+        isShop: true,
+        shopId: 7,
+        createdAt: new Date(),
+      },
+      {
+        username: "huyentrang",
+        password: await hashPassword("123456"),
+        fullName: "Chân Gà Huyền Trang",
+        email: "huyentrang@gmail.com",
+        phone: "",
+        address: "3 Kiệt 125A Nguyễn Lộ Trạch, P. Xuân Phú, Tp. Huế, Huế",
+        isShop: true,
+        shopId: 8,
+        createdAt: new Date(),
+      },
+      {
+        username: "tranggoc",
+        password: await hashPassword("123456"),
+        fullName: "Chân Gà Huyền Trang Gốc",
+        email: "tranggoc@gmail.com",
+        phone: "",
+        address: "39 Tố Hữu, P. Xuân Phú, Tp. Huế, Huế",
+        isShop: true,
+        shopId: 9,
+        createdAt: new Date(),
+      },
+      {
+        username: "anvat1999",
+        password: await hashPassword("123456"),
+        fullName: "Tiệm Ăn Vặt 1999",
+        email: "anvat1999@gmail.com",
+        phone: "",
+        address: "21 Kiệt 116 Bà Triệu, P. Phú Hội, Tp. Huế, Huế",
+        isShop: true,
+        shopId: 10,
+        createdAt: new Date(),
+      },
+      {
+        username: "hotto",
+        password: await hashPassword("123456"),
+        fullName: "HOTTO",
+        email: "hotto@gmail.com",
+        phone: "",
+        address: "34 Hai Bà Trưng, P. Vĩnh Ninh, Tp. Huế, Huế",
+        isShop: true,
+        shopId: 11,
+        createdAt: new Date(),
+      },
+      {
+        username: "kfchue",
+        password: await hashPassword("123456"),
+        fullName: "KFC",
+        email: "kfchue@gmail.com",
+        phone: "",
+        address: "34 Hai Bà Trưng, P. Vĩnh Ninh, Tp. Huế, Huế",
+        isShop: true,
+        shopId: 12,
+        createdAt: new Date(),
+      },
+      {
+        username: "tokbokki",
+        password: await hashPassword("123456"),
+        fullName: "Doo Tokbokki",
+        email: "tokbokki@gmail.com",
+        phone: "",
+        address: "4 Kiệt 21 Ngô Gia Tự, P. Vĩnh Ninh, Tp. Huế, Huế",
+        isShop: true,
+        shopId: 13,
+        createdAt: new Date(),
+      },
+      {
+        username: "totokem",
+        password: await hashPassword("123456"),
+        fullName: "Kem Xông Khói Tồ Tồ",
+        email: "totokem@gmail.com",
+        phone: "",
+        address: "67 Nguyễn Huệ, Tp. Huế, Huế",
+        isShop: true,
+        shopId: 14,
+        createdAt: new Date(),
+      },
+      {
+        username: "cotun",
+        password: await hashPassword("123456"),
+        fullName: "Xôi Mặn Cô Tủn",
+        email: "cotun@gmail.com",
+        phone: "",
+        address: "159 Trường Chinh, P. An Đông, Tp. Huế, Huế",
+        isShop: true,
+        shopId: 15,
+        createdAt: new Date(),
+      },
+      {
+        username: "heksa",
+        password: await hashPassword("123456"),
+        fullName: "Heksa (Kim Sa)",
+        email: "heksa@gmail.com",
+        phone: "",
+        address: "34 Kiệt 176 Phan Chu Trinh, P. Phước Vĩnh, Tp. Huế, Huế",
+        isShop: true,
+        shopId: 16,
+        createdAt: new Date(),
+      },
+      {
+        username: "norikimpap",
+        password: await hashPassword("123456"),
+        fullName: "Nori Kimpap",
+        email: "norikimpap@gmail.com",
+        phone: "",
+        address: "24 Kiệt 154 Bà Triệu, Tổ 4, P. Phú Nhuận, Tp. Huế, Huế",
+        isShop: true,
+        shopId: 17,
+        createdAt: new Date(),
+      },
+      {
+        username: "bongboo",
+        password: await hashPassword("123456"),
+        fullName: "Bong Boo Roo",
+        email: "bongboo@gmail.com",
+        phone: "",
+        address: "115 Trường Chinh, P. An Đông, Tp. Huế, Huế",
+        isShop: true,
+        shopId: 18,
+        createdAt: new Date(),
+      },
+    ]);
+  },
 
-    async down(queryInterface, Sequelize) {
-        /**
-         * Add commands to revert seed here.
-         *
-         * Example:
-         * await queryInterface.bulkDelete('People', null, {});
-         */
-        queryInterface.bulkDelete('user', null, {});
-    }
+  async down(queryInterface, Sequelize) {
+    /**
+     * Add commands to revert seed here.
+     *
+     * Example:
+     * await queryInterface.bulkDelete('People', null, {});
+     */
+    queryInterface.bulkDelete("user", null, {});
+  },
 };

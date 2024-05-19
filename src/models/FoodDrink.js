@@ -3,7 +3,6 @@ const sequelize = require("../db/mysql.connect");
 const MODEL_NAME = "Food_Drink";
 const Category = require("./Category");
 const Shop = require("./Shop");
-const OrderDetail = require("./OrderDetail");
 
 const defaultImage =
   "https://mms.img.susercontent.com/vn-11134517-7r98o-lqn24i7chcfw9c@resize_ss120x120!@crop_w120_h120_cT";

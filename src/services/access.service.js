@@ -138,12 +138,10 @@ class AccessService {
     return await User.update({ isActive: true }, { where: { id } });
   }
 
-  static async sendVerifyRequest(accessToken) {
+  static async sendVerifyRequest({ accessToken, email }) {
     const subject = `Mail xác thực tài khoản của bạn`;
-    const verifyLink = `http://localhost:3055/api/v1/verifyUser?accesstoken=${accessToken}`;
-    const decode = await JWT.verify(accessToken, authConst.JWT_ACCESSKEY);
-    console.log(decode);
-    const { email } = decode;
+    const verifyLink =
+      `http://localhost:3055/api/v1/verifyUser?accesstoken=` + accessToken;
     return await sendMail(
       email,
       subject,

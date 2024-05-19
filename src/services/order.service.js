@@ -50,7 +50,6 @@ class OrderService {
       },
       { plan: true }
     );
-    console.log("OKE KHONG");
     if (!newOrder) throw new BadRequestError("Can't create this Order!");
     if (orderDetails.length === 0)
       throw new BadRequestError("Order detail can't be null!");

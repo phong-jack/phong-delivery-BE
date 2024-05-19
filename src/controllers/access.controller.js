@@ -44,9 +44,10 @@ class AccessController {
   sendVerifyRequest = async (req, res) => {
     new OK({
       message: "Email sent!",
-      metadata: await AccessService.sendVerifyRequest(
-        req.headers[HEADERS.ACCESS_TOKEN]
-      ),
+      metadata: await AccessService.sendVerifyRequest({
+        accessToken: req.headers[HEADERS.ACCESS_TOKEN],
+        email: req.body.email,
+      }),
     }).send(res);
   };
 

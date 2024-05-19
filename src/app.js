@@ -19,16 +19,7 @@ app.use(morgan("dev"));
 
 // init DB
 require("./db/mysql.connect");
-const Order = require("./models/Order");
-const User = require("./models/User");
-const OrderDetail = require("./models/OrderDetail");
-const OrderStatus = require("./models/OrderStatus");
-const Shop = require("./models/Shop");
-const Location = require("./models/Location");
-const Review = require("./models/Review");
-const Category = require("./models/Category");
-const FoodDrink = require("./models/FoodDrink");
-const KeyToken = require("./models/KeyToken");
+require("./models/index");
 
 //init routes
 app.use("/api/v1", require("./routes"));
