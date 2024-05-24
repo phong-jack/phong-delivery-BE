@@ -1,9 +1,10 @@
 const express = require("express");
+const { verifyToken } = require("../../auth/checkAuth");
 const router = express.Router();
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
-router.post("/createCheckoutSession", async (req, res) => {
+router.use(verifyToken).post("/createCheckoutSession", async (req, res) => {
   const { products } = req.body;
   const lineItems = products.map((product) => ({
     price_data: {

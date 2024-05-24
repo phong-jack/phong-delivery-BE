@@ -10,6 +10,7 @@ const {
   toggleOrderStatus,
   getOrderByShopPaginate,
   statisticOrderByYear,
+  reportByDay,
 } = require("../../controllers/order.controller");
 const router = express.Router();
 
@@ -25,6 +26,7 @@ router
 router
   .use(verifyToken, checkShopPermisson)
   .get("/getStatistics", asyncHandler(getStatistics))
-  .get("/statisticsByYear/:year", asyncHandler(statisticOrderByYear));
+  .get("/statisticsByYear/:year", asyncHandler(statisticOrderByYear))
+  .get("/report/:shopId", asyncHandler(reportByDay));
 
 module.exports = router;

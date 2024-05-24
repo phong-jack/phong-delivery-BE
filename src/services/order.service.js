@@ -1,7 +1,11 @@
+const { Op } = require("sequelize");
 const { ORDER_STATUS } = require("../constant");
 const { BadRequestError } = require("../core/error.response");
 const { Order } = require("../models");
-const { sortOrdersByUpdatedAtDesc } = require("../utils/func.util");
+const {
+  sortOrdersByUpdatedAtDesc,
+  getDatesInRange,
+} = require("../utils/func.util");
 const FoodDrinkService = require("./foodDrink.service");
 const OrderDetailService = require("./orderDetail.service");
 const OrderRepository = require("./repositories/order.repo");
@@ -175,16 +179,14 @@ class OrderService {
 
     if (orderStatus == ORDER_STATUS.SHIPPING) {
       if (order.statusCode != ORDER_STATUS.ACCEPTED) {
-        throw new BadRequestError("Không thể chuyển giao trạng thái ship");
+        throw new BadRequestError("Không thể chuyển sang trạng thái ship");
       }
       return await OrderRepository.updateOrderStatus({ orderId, orderStatus });
     }
 
     if (orderStatus == ORDER_STATUS.FINISHED) {
       if (order.statusCode != ORDER_STATUS.SHIPPING) {
-        throw new BadRequestError(
-          "Không phải đang ship sao mà chuyển qua được nhận hàng cha!"
-        );
+        throw new BadRequestError("Đơn hàng chưa được hoàn thành");
       }
       return await OrderRepository.updateOrderStatus({ orderId, orderStatus });
     }
@@ -229,6 +231,56 @@ class OrderService {
     });
 
     return results;
+  }
+
+  static async reportByDay({ shopId, dateStart, dateEnd }) {
+    const excludedStatuses = [ORDER_STATUS.CANCEL, ORDER_STATUS.REJECTED];
+    const orders = await Order.findAll({
+      where: {
+        shopId: shopId,
+        updatedAt: { [Op.between]: [new Date(dateStart), new Date(dateEnd)] },
+        statusCode: { [Op.notIn]: excludedStatuses },
+      },
+      raw: true,
+    });
+
+    // Khởi tạo một object để lưu trữ số lượng đơn hàng và tổng số tiền theo ngày
+    const orderStatsByDay = {};
+
+    // Tạo một mảng chứa tất cả các ngày trong khoảng thời gian
+    const allDates = [];
+    let currentDate = new Date(dateStart);
+    const endDate = new Date(dateEnd);
+
+    while (currentDate <= endDate) {
+      const formattedDate = currentDate.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      });
+      allDates.push(formattedDate);
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    // Tạo mục thống kê cho mỗi ngày trong khoảng thời gian
+    allDates.forEach((date) => {
+      orderStatsByDay[date] = { totalOrders: 0, totalAmount: 0 };
+    });
+
+    for (const order of orders) {
+      const orderDate = new Date(order.updatedAt).toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      });
+      const totalAmount = await OrderService.calculatorOrder({
+        id: order.orderId,
+      });
+
+      orderStatsByDay[orderDate].totalOrders++;
+      orderStatsByDay[orderDate].totalAmount += totalAmount || 0;
+    }
+    return orderStatsByDay;
   }
 }
 

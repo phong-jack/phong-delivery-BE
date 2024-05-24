@@ -84,6 +84,17 @@ class OrderController {
       }),
     }).send(res);
   }
+
+  async reportByDay(req, res) {
+    new OK({
+      message: "Get report success",
+      metadata: await OrderService.reportByDay({
+        shopId: req.params.shopId,
+        dateStart: req.query.dateStart,
+        dateEnd: req.query.dateEnd,
+      }),
+    }).send(res);
+  }
 }
 
 module.exports = new OrderController();

@@ -12,7 +12,7 @@ class Database {
     const sequelize = new Sequelize(database, username, password, {
       host,
       dialect,
-      logging: console.log, // Đặt logging thành console.log để log các truy vấn SQL
+      logging: false, // Đặt logging thành console.log để log các truy vấn SQL
       dialectOptions: {},
       define: {
         underscored: false,
