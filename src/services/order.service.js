@@ -192,6 +192,17 @@ class OrderService {
     }
     // Quán có quyền từ chối luôn
     if (orderStatus == ORDER_STATUS.REJECTED) {
+      if (
+        [
+          ORDER_STATUS.ACCEPTED,
+          ORDER_STATUS.CANCEL,
+          ORDER_STATUS.FINISHED,
+          ORDER_STATUS.REJECTED,
+          ORDER_STATUS.SHIPPING,
+        ].includes(orderStatus)
+      ) {
+        throw new BadRequestError("Không thể từ chối đơn hàng");
+      }
       return await OrderRepository.updateOrderStatus({ orderId, orderStatus });
     }
   }
@@ -234,11 +245,14 @@ class OrderService {
   }
 
   static async reportByDay({ shopId, dateStart, dateEnd }) {
+    const dateEndSql = new Date(dateEnd);
+    dateEndSql.setHours(23, 59, 59, 999);
+
     const excludedStatuses = [ORDER_STATUS.CANCEL, ORDER_STATUS.REJECTED];
     const orders = await Order.findAll({
       where: {
         shopId: shopId,
-        updatedAt: { [Op.between]: [new Date(dateStart), new Date(dateEnd)] },
+        updatedAt: { [Op.between]: [new Date(dateStart), dateEndSql] },
         statusCode: { [Op.notIn]: excludedStatuses },
       },
       raw: true,
@@ -279,6 +293,8 @@ class OrderService {
 
       orderStatsByDay[orderDate].totalOrders++;
       orderStatsByDay[orderDate].totalAmount += totalAmount || 0;
+
+      console.log(order);
     }
     return orderStatsByDay;
   }

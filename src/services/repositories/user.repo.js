@@ -4,7 +4,6 @@ class UserRepository {
   static async findById({ id }) {
     if (!id) return null;
     const user = await User.findOne({ where: { id }, raw: true });
-    console.log(user);
     return user;
   }
   static async update({ id, fullName, email, image, phone, address }) {

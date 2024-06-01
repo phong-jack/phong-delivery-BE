@@ -26,6 +26,14 @@ Shop.init(
       type: DataTypes.STRING,
       defaultValue: "",
     },
+    lat: {
+      type: DataTypes.DOUBLE,
+      allowNull: true,
+    },
+    lng: {
+      type: DataTypes.DOUBLE,
+      allowNull: true,
+    },
     isWorking: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,

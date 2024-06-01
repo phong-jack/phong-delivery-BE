@@ -61,6 +61,27 @@ class ShopController {
       }),
     }).send(res);
   }
+
+  async updateShop(req, res) {
+    new OK({
+      message: "Updated shop!",
+      metadata: await ShopService.updateShop({
+        id: req.params.id,
+        ...req.body,
+      }),
+    }).send(res);
+  }
+
+  async findShopByDistance(req, res) {
+    new OK({
+      message: "Get shop by distance oke!",
+      metadata: await ShopService.findShopByDistance(
+        req.user.id,
+        req.query.page,
+        req.query.limit
+      ),
+    }).send(res);
+  }
 }
 
 module.exports = new ShopController();

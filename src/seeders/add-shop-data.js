@@ -8,14 +8,21 @@ module.exports = {
         name: "1985BBQ - 2 Bà Triệu (Nướng Lẩu-Ăn Vặt Và Trà Sữa)",
         address: "2 Bà Triệu, P. Phú Hội, Tp. Huế, Huế",
         phone: "0123456789",
+        lat: 16.4609,
+        lng: 107.6,
+        isWorking: true,
         imageUrl:
           "https://images.foody.vn/res/g73/725143/prof/s640x400/foody-upload-api-foody-mobile-cu-ffd77575-220417130548.jpeg",
       },
+
       {
         id: 2,
         name: "Donald Trung - Bánh Ướt & Bánh Cuốn Thịt Heo",
         address: "28 Hoàng Văn Thụ, P. An Đông, Tp. Huế, Huế",
         phone: "0123456789",
+        lat: 16.4619,
+        lng: 107.59546,
+        isWorking: true,
         imageUrl:
           "https://images.foody.vn/res/g69/681408/prof/s640x400/foody-upload-api-foody-mobile-img_2952-190327151015.jpg",
       },
@@ -25,6 +32,9 @@ module.exports = {
         address:
           "Tầng 4, Tầng 4, Vincom Plaza, 50A Hùng Vương, P. Phú Nhuận, Tp. Huế, Huế",
         phone: "0123456789",
+        lat: 16.4619,
+        lng: 107.59546,
+        isWorking: true,
         imageUrl:
           "https://mms.img.susercontent.com/vn-11134513-7r98o-lsu3u6tjrj4paf@resize_ss640x400!@crop_w640_h400_cT",
       },
@@ -33,6 +43,9 @@ module.exports = {
         name: "Kinh Bắc - Bún Đậu Mắm Tôm",
         address: "6/16 Trường Chinh Tổ 2, P. Xuân Phú, Tp. Huế, Huế",
         phone: "0123456789",
+        lat: 16.4607783,
+        lng: 107.6039743,
+        isWorking: true,
         imageUrl:
           "https://images.foody.vn/res/g4/32324/prof/s640x400/foody-upload-api-foody-mobile-22323434-210121141934.jpg",
       },
@@ -41,6 +54,9 @@ module.exports = {
         name: "Đặc Sản Xứ Quảng - Mì Quảng & Bún Mắm",
         address: "103/19 Nguyễn Trường Tộ, P. Vĩnh Ninh, Tp. Huế, Huế",
         phone: "0123456789",
+        lat: 16.4619,
+        lng: 107.59546,
+        isWorking: true,
         imageUrl:
           "https://images.foody.vn/res/g79/786263/prof/s640x400/foody-upload-api-foody-mobile-foody-dac-san-xu-qua-181012084917.jpg",
       },
@@ -49,6 +65,9 @@ module.exports = {
         name: "Nhà Cám - Bún Đậu Mắm Tôm - Nguyễn Lương Bằng",
         address: "33 Nguyễn Lương Bằng, P. Phú Hội, Tp. Huế, Huế",
         phone: "0123456789",
+        lat: 16.4631765,
+        lng: 107.5988049,
+        isWorking: true,
         imageUrl:
           "https://images.foody.vn/res/g88/870335/prof/s640x400/foody-upload-api-foody-mobile-foody-upload-api-foo-190820154516.jpg",
       },
@@ -56,6 +75,9 @@ module.exports = {
         id: 7,
         name: "Bếp Ở HẺM 34",
         address: "7/34 Nguyễn Tri Phương, P. Phú Nhuận, Tp. Huế, Huế",
+        lat: 16.4619,
+        lng: 107.59546,
+        isWorking: true,
         phone: "0123456789",
         imageUrl:
           "https://images.foody.vn/res/g109/1082398/prof/s640x400/file_restaurant_photo_gkga_16503-82e40e06-220419151800.jpg",
@@ -65,6 +87,9 @@ module.exports = {
         name: "Chân Gà Huyền Trang (GỐC) - Nguyễn Lộ Trạch",
         address: "3 Kiệt 125A Nguyễn Lộ Trạch, P. Xuân Phú, Tp. Huế, Huế",
         phone: "0123456789",
+        lat: 16.4701818,
+        lng: 107.5996606,
+        isWorking: true,
         imageUrl:
           "https://images.foody.vn/res/g94/933048/prof/s640x400/file_restaurant_photo_vkti_16809-4b34ccb7-230408171008.jpg",
       },
