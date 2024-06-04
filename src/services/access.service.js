@@ -87,7 +87,7 @@ class AccessService {
       phone,
     });
     const accessToken = generateAccessToken(newUser);
-    this.sendVerifyRequest(accessToken);
+    this.sendVerifyRequest({ accessToken, email });
 
     return {
       user: newUser,

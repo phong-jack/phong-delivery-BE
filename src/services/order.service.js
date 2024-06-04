@@ -197,7 +197,6 @@ class OrderService {
           ORDER_STATUS.ACCEPTED,
           ORDER_STATUS.CANCEL,
           ORDER_STATUS.FINISHED,
-          ORDER_STATUS.REJECTED,
           ORDER_STATUS.SHIPPING,
         ].includes(orderStatus)
       ) {
